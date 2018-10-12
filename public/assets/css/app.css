@@ -1,0 +1,93 @@
+.no-sidebar #page-wrapper{
+    margin: 0;
+}
+.service .edit, .service .remove{
+    display: none;
+    margin-left: 10px;
+}
+.service:hover .vendor-count{
+    /*display: none;*/
+}
+.service:hover .edit,.service:hover .remove{
+    /*display: inline;*/
+}
+table form{
+    display: inline-block;
+}
+#learners .page-aside{
+    min-height: 500px;
+}
+#learners #service-list{
+}
+#learnings .panel-heading, #learnings .panel-body, #learnings .panel-footer{
+    /*text-align: center;*/
+}
+#learnings .bootstrap-tagsinput, #learning-content{
+    width: 100%;
+}
+#learnings .bootstrap-tagsinput input{
+    width: 250px;
+}
+
+.fileupload{
+    display: inline-block;
+}
+.fileupload input.upload {
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+.fileupload img{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    z-index: 9999;
+}
+
+.right-aside .contact-list td img {
+    height: 30px;
+}
+
+.left-aside{
+    width: 250px;
+}
+.right-aside{
+    margin-left: 250px;
+}
+
+.top-left-part{
+    /*background: transparent;*/
+}
+.content-wrapper .top-left-part {
+    width: auto;
+}
+
+.bootstrap-tagsinput input{
+    width: 100%;
+    display: block;
+}
+
+.wizard-steps>li.done {
+    background: #eb3270;
+}
+
+.modal-body{
+    /*padding: 0;*/
+}
+.wizard-content, .wizard-buttons{
+    margin: 0;
+}
+.clockpicker-popover, .pac-container{
+    z-index: 99999;
+}
+.order-action{
+    margin: 5px;
+}
+@media (max-width: 768px) {
+    .left-aside{
+        display: none;
+    }
+    .right-aside{
+        margin-left: 0;
+    }
+}
