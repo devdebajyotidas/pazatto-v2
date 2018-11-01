@@ -17,7 +17,7 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->string('email')->unique();
             $table->string('mobile')->unique();
-            $table->string('password')->default('secret');
+            $table->string('password')->default(bcrypt('secret'));
             $table->integer('account_id');
             $table->string('account_type');
             $table->string('fcm_token')->default('');

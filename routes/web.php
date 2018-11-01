@@ -17,6 +17,10 @@ use App\Notifications\Notify;
 //use Illuminate\Routing\Route;
 date_default_timezone_set("Asia/Kolkata");
 
+Route::get('phpinfo', function (){
+    phpinfo();
+});
+
 Auth::routes();
 Route::get('logout', 'Auth\LoginController@logout');
 

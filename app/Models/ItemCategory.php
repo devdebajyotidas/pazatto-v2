@@ -15,6 +15,7 @@ class ItemCategory extends Model implements  AuditableContract
 
     protected $fillable = [
         'vendor_id',
+        'parent_id',
         'name',
         'priority',
     ];

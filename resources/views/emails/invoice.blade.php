@@ -35,6 +35,9 @@
                                         <br>
                                         Bangalore - 364002
                                     </p>
+                                    <p class="text-muted m-l-5">
+                                        GSTIN: 29AAJCP5921B1ZG
+                                    </p>
                                 </address>
                             </div>
                             <div class="pull-right text-right">
