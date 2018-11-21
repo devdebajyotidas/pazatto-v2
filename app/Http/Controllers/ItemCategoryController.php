@@ -55,7 +55,7 @@ class ItemCategoryController extends Controller
 
     public function update(Request $request, $id)
     {
-        dd($request->all());
+//        dd($request->all());
         $category = ItemCategory::find($id);
         $category->fill($request->all());
         $category->save();

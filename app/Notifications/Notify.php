@@ -6,6 +6,7 @@ use App\Models\Agent;
 use App\Models\Order;
 use App\Models\Vendor;
 use function count;
+use ExponentPhpSDK\Expo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use function sprintf;
@@ -110,11 +111,18 @@ class Notify
 //            'data' => $order
         ];
 
-        $data['fcm_token'] = $customer->user->fcm_token;
-        $notify['fcm'][] = self::sendPushNotification($data);
+        if($customer->user->fcm_token) {
+            $data['fcm_token'] = $customer->user->fcm_token;
+            $notify['fcm'][] = self::sendPushNotification($data, $customer->user->id);
+        }
+
+        if($customer->user->expo_token) {
+            $data['expo_token'] = $customer->user->expo_token;
+            $notify['fcm'][] = self::sendExpoPushNotification($data, $customer->user->id);;
+        }
 
         $data['fcm_token'] = $vendor->user->fcm_token;
-        $notify['fcm'][] = self::sendPushNotification($data);
+        $notify['fcm'][] = self::sendPushNotification($data, $vendor->user->id);
 
 //        if($order->isDirty('status'))
 //        {
@@ -135,7 +143,7 @@ class Notify
                 foreach ($agents as $agent)
                 {
                     $data['fcm_token'] = $agent->user->fcm_token;
-                    $notify[] = Notify::sendPushNotification($data);
+                    $notify[] = Notify::sendPushNotification($data, $agent->user->id);
                 }
             }
 
@@ -161,6 +169,28 @@ class Notify
                 'content' => self::$stockTemplate[$item->in_stock]['content'],
                 'data' => $item
             ];
+        }
+    }
+
+
+    public static function sendExpoPushNotification($data, $userId){
+        $interestDetails = [(string)$userId, $data['expo_token']];
+
+        // Build the notification data
+        $notification = ['title' => $data['notification']['title'] , 'body' =>  $data['notification']['content'], 'sound' => 'default'];
+
+        // You can quickly bootup an expo instance
+        $expo = Expo::normalSetup();
+
+        try {
+            // Notify an interest with a notification
+            $expo->notify($interestDetails[0], $notification);
+        }catch (\Exception $exception) {
+            // Subscribe the recipient to the server
+            $expo->subscribe($interestDetails[0], $interestDetails[1]);
+
+            // Notify an interest with a notification
+            $expo->notify($interestDetails[0], $notification);
         }
     }
 

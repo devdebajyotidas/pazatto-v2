@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->integer('account_id');
             $table->string('account_type');
             $table->string('fcm_token')->default('');
+            $table->string('expo_token')->default('');
             $table->string('api_token', 60)->unique()->default('');
             $table->rememberToken();
             $table->timestamps();

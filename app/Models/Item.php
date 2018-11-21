@@ -41,7 +41,7 @@ class Item extends Model implements  AuditableContract
     protected $hidden = ['created_at','updated_at','deleted_at'];
 
     public function category(){
-        return $this->belongsTo('App\Models\ItemCategory','item_category_id');
+        return $this->belongsTo('App\Models\ItemCategory','item_category_id')->withTrashed();
     }
 
     public function vendor(){

@@ -22,19 +22,27 @@
                                     {{--@if(session('role') == 'vendor')--}}
                                         @foreach($categories as $category)
                                             <li>
-                                                <a href="javascript:void(0)" class="service"
+                                                <a href="javascript:void(0)" class="service" style="display: inline-block"
                                                    data-toggle="modal"
                                                    data-id="{{ $category->id }}" data-name="{{ $category->name }}">
                                                     {{ $category->name }}
                                                     ({{ $category->items_count  }})
                                                     {{--<span>{{ $category->learners()->count() }}</span>--}}
                                                     {{--<span class="vendor-count">{{ $category->items_count  }}</span>--}}
-                                                    {{--<span class="remove"><i class="ti-close" aria-hidden="true"></i></span>--}}
-                                                    {{--<span data-id="{{ $category->id }}"--}}
-                                                    {{--data-name="{{ $category->name }}" class="edit">--}}
-                                                    {{--<i class="ti-pencil" aria-hidden="true"></i>--}}
-                                                    {{--</span>--}}
+                                                    <a href="#category-{{ $category->id }}" data-toggle="modal" style="display: inline-block; vertical-align: middle; cursor: pointer; padding-left: 0; padding-right: 0;">
+                                                        <i class="ti-pencil" aria-hidden="true"></i>
+                                                    </a>
+                                                    <a href="javascript:void(0)" class="category-delete" style="display: inline-block; vertical-align: middle; cursor: pointer; padding-left: 0; padding-right: 0">
+                                                        <span class="remove"><i class="ti-close" aria-hidden="true"></i></span>
+                                                        <form action="{{ url('categories/' . $category->id ) }}" method="post">
+                                                        {{ csrf_field() }}
+                                                            {{ method_field('delete') }}
+                                                        </form>
+                                                    </a>
+
+
                                                 </a>
+
 
                                                 <div id="category-{{ $category->id  }}" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
                                                      aria-hidden="true">
@@ -384,6 +392,24 @@
                         console.log();
                         return new Promise(function (resolve) {
                             $(that).parent('form').submit();
+                        })
+                    }
+                }]);
+            });
+
+            $(document).on('click', '.category-delete', function (event) {
+                var that = this;
+                swal.queue([{
+                    title: 'Remove Category',
+                    text: "Are you sure?",
+                    confirmButtonText: 'Remove',
+                    confirmButtonColor: '#f55753',
+                    showCancelButton: true,
+                    showLoaderOnConfirm: true,
+                    preConfirm: function () {
+                        console.log();
+                        return new Promise(function (resolve) {
+                            $(that).find('form').submit();
                         })
                     }
                 }]);

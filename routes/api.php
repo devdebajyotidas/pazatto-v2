@@ -22,6 +22,38 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group(['prefix' => 'v1'], function(){
 
+    Route::get('config', function (){
+
+        $config = '{
+          "payment_methods": {
+            "net_banking": false,
+            "bhim": true,
+            "card": true,
+            "phonepe": true,
+            "paytm": true,
+            "cod": true
+          },
+          "support": {
+            "whatsapp": "",
+            "phone": "7003082730",
+            "email": ""
+          },
+          "release": {
+            "ios": {
+              "store_url": "https://www.apple.com/in/ios/app-store/",
+              "maintenance_mode": false,
+              "version": "1.27.00"
+            },
+            "android": {
+              "store_url": "https://play.google.com/store/apps/details?id=com.pazatto.app",
+              "maintenance_mode": false,
+              "version": "1.27.00"
+            }
+          }
+        }';
+        return response()->json(json_decode($config));
+    });
+
     Route::any('timestamp',function (){
         return \Carbon\Carbon::now();
     });
@@ -61,6 +93,7 @@ Route::group(['prefix' => 'v1'], function(){
 
 
     Route::get('vendors',function (Request $request) {
+//        return $request->all();
 //        session(['coordinates' => '112,1234']);
 
 //        $services = \App\Models\Service::with(['vendors' => function ($query) {
@@ -68,7 +101,8 @@ Route::group(['prefix' => 'v1'], function(){
 //        }])->get();
 
         $services = \App\Models\Service::with(['vendors' => function($query){
-                return $query->orderBy('priority', 'ASC');
+//                return $query->orderBy('priority', 'ASC');
+                return $query->orderByRaw('ISNULL(priority), priority ASC')->orderBy('created_at', 'DESC');
         }])->get();
 
 //        return $services;
@@ -119,9 +153,11 @@ Route::group(['prefix' => 'v1'], function(){
                 return $flag;
             });
 
-//            foreach ($vendors as $key => $restaurant) {
-//
-//            }
+            // Filter out vendors closed for the day
+//            $filtered = $filtered->filter(function ($restaurant, $key) {
+//                return  $restaurant->is_open_now;
+//            });
+
             $restaurants[$index]['id'] = $service->id;
             $restaurants[$index]['name'] = $service->name;
             $restaurants[$index]['vendors'] = array_values($filtered->all());
@@ -199,3 +235,4 @@ Route::group(['prefix' => 'v1'], function(){
 
     return $point;
 }
+

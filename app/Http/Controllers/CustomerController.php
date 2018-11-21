@@ -88,6 +88,16 @@ class CustomerController extends Controller
             $customer->fill($request->all());
             if($customer->save())
             {
+                if($request->get('user')) {
+                    $user = $request->get('user');
+                    if($user['email']) {
+                        $customer->user->email = $user['email'];
+                    }
+                    if($user['fcm_token']) {
+                        $customer->user->fcm_token = $user['fcm_token'];
+                    }
+                    $customer->user->save();
+                }
                 $response['success'] = true;
                 $response['account'] = $customer->load('user');
                 $response['error'] = '';

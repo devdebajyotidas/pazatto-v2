@@ -30,6 +30,7 @@ class User extends Authenticatable implements AuditableContract, UserResolver
         'account_id',
         'account_type',
         'fcm_token',
+        'expo_token',
         'api_token',
         'remember_token',
     ];

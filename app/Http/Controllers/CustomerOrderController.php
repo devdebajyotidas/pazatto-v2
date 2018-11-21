@@ -15,7 +15,7 @@ class CustomerOrderController extends Controller
             'lines.item.category' => function($query){
 
         }, 'vendor' => function($query){
-                $query->select('id','name','min_order','delivery_charge','tax','has_delivery','has_takeaway');
+                $query->select('id','name', 'featured_image', 'min_order','delivery_charge','tax','has_delivery','has_takeaway');
         }])->where('customer_id', '=', $customerId)->orderBy('id','desc')->get();
 
         return $orders;

@@ -31,7 +31,7 @@ class Paytm
 //        $paramList["MOBILE_NO"] = $data['mobile']; // customer 10 digit mobile no.
 //        $paramList["payt_STATUS"] = 1; // customer 10 digit mobile no.
 
-        $checkSum = $this->getChecksumFromArray($paramList, '6Y!xlqpgwtP6dyu@');
+        return $checkSum = $this->getChecksumFromArray($paramList, '6Y!xlqpgwtP6dyu@');
         $paramList["CHECKSUMHASH"] = $checkSum;
 
         return json_encode($paramList);

@@ -138,8 +138,11 @@
                         <p><small>Online Payment:</small> {{ $onlinePayment }}</p>
                         <p><small>Cash Payment: </small>{{ $cashPayment }}</p>
                         <hr>
+                        @php
+                            $customerCommission = ceil(($vendor->customer_commission/100) * $subTotal)
+                        @endphp
                         @if($for != 'VENDOR')
-                            <p>Customer Commission ({{ $vendor->customer_commission }}%) :  {{ $customerCommission = ceil(($vendor->customer_commission/100) * $subTotal)  }} </p>
+                            <p>Customer Commission ({{ $vendor->customer_commission }}%) :  {{ $customerCommission }} </p>
                         @endif
                             <p>Vendor Commission ({{ $vendor->pazatto_commission }}%) : {{ $vendorCommission = ceil(  ($vendor->pazatto_commission/100) * (($subTotal + $packingCharge)))  }} </p>
                             <p>Payment Gateway fees(2%): {{ $paymentGatewayFees = ceil((2/100) * $onlinePayment) }}</p>

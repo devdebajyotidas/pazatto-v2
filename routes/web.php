@@ -145,3 +145,15 @@ Route::get('about-us', function (){
 Route::get('/time', function() {
     return date('h:i');
 });
+
+Route::get('/paytm/process', function (){
+    return view('paytm.transaction');
+});
+
+Route::post('/paytm/process', function (){
+    return view('paytm.transaction');
+});
+
+Route::post('/paytm/callback', function (){
+    return view('paytm.response');
+});

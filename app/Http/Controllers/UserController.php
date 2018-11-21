@@ -70,7 +70,15 @@ class UserController extends Controller
 
         if($user)
         {
-            $user->fcm_token = $request->get('fcm_token');
+            $fcmToken = $request->get('fcm_token');
+            $expoToken = $request->get('expo_token');
+
+            if($expoToken) {
+                $user->expo_token = $expoToken;
+            }
+            if($fcmToken) {
+                $user->fcm_token = $fcmToken;
+            }
             $user->save();
 
             $response['success'] = true;

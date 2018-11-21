@@ -82,7 +82,9 @@ class Vendor extends Model implements AuditableContract
         $customerCommission = $this->getAttribute('customer_commission') ? $this->getAttribute('customer_commission') : 0;
 
         return $this->categories()
-            ->orderBy('priority', 'DESC')
+//            ->orderBy('priority', 'DESC')
+            ->orderByRaw('ISNULL(priority), priority ASC')
+            ->orderBy('created_at', 'DESC')
 //            ->orderBy('updated_at', 'DESC')
             ->with(
             [
