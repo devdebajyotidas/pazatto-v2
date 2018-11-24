@@ -235,7 +235,7 @@ Route::group(['prefix' => 'v1'], function(){
     Route::put('vendors/{id}/order', 'VendorOrder@update');
     Route::delete('vendors/{id}/order', 'VendorOrder@destroy');
 
-    Route::put('vendors/{itemId}/item/', 'Vendoritems@update');
+    Route::put('vendors/{itemId}/item/', 'VendorItems@update');
     
     Route::get('vendors/{vendorId}/dashboard', 'VendorDashboard@index');
 
