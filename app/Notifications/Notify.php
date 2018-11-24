@@ -8,6 +8,7 @@ use App\Models\Vendor;
 use function count;
 use ExponentPhpSDK\Expo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use function sprintf;
 
@@ -116,9 +117,15 @@ class Notify
             $notify['fcm'][] = self::sendPushNotification($data, $customer->user->id);
         }
 
-        if($customer->user->expo_token) {
+        if(!empty($customer->user->expo_token)) {
             $data['expo_token'] = $customer->user->expo_token;
-            $notify['fcm'][] = self::sendExpoPushNotification($data, $customer->user->id);;
+            try {
+                $notify['fcm'][] = self::sendExpoPushNotification($data, $customer->user->id);;
+            } catch (\Exception $exception) {
+                Log::debug('Expo error details: ' . $exception->getMessage() );
+                Log::debug('Expo error details: ' . $exception->getTraceAsString() );
+            }
+
         }
 
         $data['fcm_token'] = $vendor->user->fcm_token;

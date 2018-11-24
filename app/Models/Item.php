@@ -16,7 +16,7 @@ class Item extends Model implements  AuditableContract
         'vendor_id',
         'item_category_id',
         'type',
-        'featured_image',
+        'image',
         'name',
         'description',
         'price',

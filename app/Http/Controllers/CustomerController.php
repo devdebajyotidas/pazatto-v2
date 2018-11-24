@@ -6,6 +6,7 @@ use App\Models\Customer;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use function time;
 
 class CustomerController extends Controller
 {
@@ -40,6 +41,7 @@ class CustomerController extends Controller
         {
             $data['customer'] = $request->except('user');
             $data['user'] = $request->get('user');
+            $data['user']['api_token'] = time();
 
             $customerValidator = Validator::make($data['customer'], Customer::$rules);
             $userValidator = Validator::make($data['user'], User::$rules);

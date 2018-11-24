@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Customer;
+use App\Notifications\Notify;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -22,6 +24,29 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group(['prefix' => 'v1'], function(){
 
+    Route::get('notify', function () {
+        $customer = Customer::find(954);
+        $data['notification'] = [
+            'tag' => 'NOTIFY',
+            'title' => 'Title',
+            'content' => 'body',
+            'data' => [
+                'title' => 'Titlex',
+                'body' => 'bodyx',
+            ]
+        ];
+
+        if(!empty($customer->user->fcm_token)) {
+            $data['fcm_token'] = $customer->user->fcm_token;
+            $notify[] = Notify::sendPushNotification($data);
+        }
+
+        if(!empty($customer->user->expo_token)) {
+            $data['expo_token'] = $customer->user->expo_token;
+            Notify::sendExpoPushNotification($data, $customer->user->id);
+        }
+    });
+
     Route::get('config', function (){
 
         $config = '{
@@ -35,7 +60,7 @@ Route::group(['prefix' => 'v1'], function(){
           },
           "support": {
             "whatsapp": "",
-            "phone": "7003082730",
+            "phone": "9739275673",
             "email": ""
           },
           "release": {
@@ -48,7 +73,7 @@ Route::group(['prefix' => 'v1'], function(){
               "store_url": "https://play.google.com/store/apps/details?id=com.pazatto.app",
               "maintenance_mode": false,
               "version": "1.27.00"
-            }
+            } 
           }
         }';
         return response()->json(json_decode($config));

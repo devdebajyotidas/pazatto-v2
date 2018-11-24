@@ -39,10 +39,9 @@ class NotificationController extends Controller
         $notify = [];
         foreach ($customers as $customer)
         {
-            if (!isset($customer->user->fcm_token))
-                continue;
+//            if (!isset($customer->user->fcm_token))
+//                continue;
 
-            $data['fcm_token'] = $customer->user->fcm_token;
             $data['notification'] = [
                 'tag' => 'NOTIFY',
                 'title' => $request->get('title'),
@@ -50,7 +49,15 @@ class NotificationController extends Controller
                 'image' => $image
             ];
 
-            $notify[] = Notify::sendPushNotification($data);
+            if(!empty($customer->user->fcm_token)) {
+                $data['fcm_token'] = $customer->user->fcm_token;
+                $notify[] = Notify::sendPushNotification($data);
+            }
+
+            if(!empty($customer->user->expo_token)) {
+                $data['expo_token'] = $customer->user->expo_token;
+                Notify::sendExpoPushNotification($data, $customer->user->id);
+            }
         }
 
         return redirect()->back();
