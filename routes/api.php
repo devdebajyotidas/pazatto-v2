@@ -202,6 +202,22 @@ Route::group(['prefix' => 'v1'], function(){
     Route::post('vendors/{vendor}/testorders', 'TestOrderController@store');
     Route::put('vendors/{vendor}/testorders/{id}', 'TestOrderController@update');
 
+
+    Route::get('vendors/{vendor}/orderdetails', 'VendorOrderDetails@index');
+    Route::get('vendors/{vendor}/orderdetails/{date}', 'VendorOrderDetails@show');
+
+    Route::get('vendors/{vendor}/order', 'VendorOrder@index');
+    Route::put('vendors/{id}/order', 'VendorOrder@update');
+    Route::delete('vendors/{id}/order', 'VendorOrder@destroy');
+
+    Route::put('vendors/{itemId}/item/', 'Vendoritems@update');
+    
+    Route::get('vendors/{vendorId}/dashboard', 'VendorDashboard@index');
+
+    Route::put('vendors/{id}/take_orders', 'VendorOrder@takeOrders');
+
+
+
 //    Route::resource('testorders', 'TestOrderController');
 //    Route::resource('customers.testorders', 'TestOrderController');
 //    Route::resource('vendors.testorders', 'TestOrderController');
