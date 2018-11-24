@@ -219,5 +219,7 @@ class VendorDashboard extends Controller
             $response['data'] = null;
             $response['message'] = 'Invalid Credentials';
         }
+
+        return $response;
     }
 }
