@@ -202,14 +202,22 @@ class VendorDashboard extends Controller
         $response = [];
         if($request->get('password') && Auth::attempt(['email' => $request->get('email'), 'password' => $request->get('password')], true))
         {
-            $response['login'] = true;
             Auth::user()->fcm_token = $request->get('fcm_token');
             Auth::user()->expo_token = $request->get('expo_token');
             Auth::user()->save();
+            $user = Auth::user();
+            $user->load('account');
+
+            $response['success'] = true;
+            $response['data'] = $user;
+            $response['message'] = 'Login Successful';
+
         }
         else
         {
-            $response['login'] = false;
+            $response['success'] = false;
+            $response['data'] = null;
+            $response['message'] = 'Invalid Credentials';
         }
     }
 }
