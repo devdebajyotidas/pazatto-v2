@@ -130,6 +130,15 @@ class Notify
 
         $data['fcm_token'] = $vendor->user->fcm_token;
         $notify['fcm'][] = self::sendPushNotification($data, $vendor->user->id);
+        if(!empty($vendor->user->expo_token)) {
+            $data['expo_token'] = $vendor->user->expo_token;
+            try {
+                $notify['fcm'][] = self::sendExpoPushNotification($data, $vendor->user->id);;
+            } catch (\Exception $exception) {
+                Log::debug('Expo error details: ' . $exception->getMessage() );
+                Log::debug('Expo error details: ' . $exception->getTraceAsString() );
+            }
+        }
 
 //        if($order->isDirty('status'))
 //        {

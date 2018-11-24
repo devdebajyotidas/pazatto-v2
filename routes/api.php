@@ -241,7 +241,8 @@ Route::group(['prefix' => 'v1'], function(){
 
     Route::put('vendors/{id}/take_orders', 'VendorOrder@takeOrders');
 
-    Route::post('loginVendor', 'VendorDashboard@showLoginForm');
+//    Route::post('loginVendor', 'VendorDashboard@showLoginForm');
+    Route::post('loginVendor', 'VendorDashboard@login');
 
 
 

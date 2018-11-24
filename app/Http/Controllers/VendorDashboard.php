@@ -197,4 +197,19 @@ class VendorDashboard extends Controller
             return $user;
         }
     }
+
+    public function login(Request $request) {
+        $response = [];
+        if($request->get('password') && Auth::attempt(['email' => $request->get('email'), 'password' => $request->get('password')], true))
+        {
+            $response['login'] = true;
+            Auth::user()->fcm_token = $request->get('fcm_token');
+            Auth::user()->expo_token = $request->get('expo_token');
+            Auth::user()->save();
+        }
+        else
+        {
+            $response['login'] = false;
+        }
+    }
 }
