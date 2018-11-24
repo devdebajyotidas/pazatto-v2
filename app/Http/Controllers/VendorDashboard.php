@@ -133,4 +133,68 @@ class VendorDashboard extends Controller
     {
         //
     }
+
+    public function showLoginForm(Request $request)
+    {
+        if($request->get('email') && $request->get('password') && Auth::attempt(['email' => $request->get('email'), 'password' => $request->get('password')]))
+        {
+           $user = Auth::user();
+
+            if(isset($user->account) && $user->account->trashed()){
+//            Auth::logout();
+            return "false";//redirect()->intended('restricted');
+                }else{
+
+                    if($request->get('fcm_token'))
+                    {
+                        $user->fcm_token = $request->get('fcm_token');
+                        $user->save();
+                    }
+
+                    if ($user->hasRole('admin')) {
+                        session(['role' => 'admin' ]);
+                    } else if ($user->hasRole('vendor')) {
+                        session(['role' => 'vendor' ]);
+                    } else if ($user->hasRole('customer')) {
+                        session(['role' => 'customer' ]);
+                    } else if ($user->hasRole('agent')) {
+                        session(['role' => 'agent' ]);
+        //                $this->redirectTo = '/orders';
+                    }
+
+                    return $user;
+                }
+        }
+        //return $this->getLogin();
+    }
+
+    public function authenticated(Request $request, $user)
+    {
+        // Processing after authentication
+
+        if(isset($user->account) && $user->account->trashed()){
+//            Auth::logout();
+            return "false";//redirect()->intended('restricted');
+        }else{
+
+            if($request->get('fcm_token'))
+            {
+                $user->fcm_token = $request->get('fcm_token');
+                $user->save();
+            }
+
+            if ($user->hasRole('admin')) {
+                session(['role' => 'admin' ]);
+            } else if ($user->hasRole('vendor')) {
+                session(['role' => 'vendor' ]);
+            } else if ($user->hasRole('customer')) {
+                session(['role' => 'customer' ]);
+            } else if ($user->hasRole('agent')) {
+                session(['role' => 'agent' ]);
+//                $this->redirectTo = '/orders';
+            }
+
+            return $user;
+        }
+    }
 }
