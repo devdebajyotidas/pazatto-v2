@@ -2,18 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Customer;
-use App\Models\Order;
-use App\Models\Vendor;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
+use App\Models\Order;
+use Illuminate\Http\Request;
 
-class TestOrderController
+class TestOrderController extends Controller
 {
-    public function index($belongsTo = null)
+    public function index($vendorId)
     {
-        return Order::count();
+
+        $orders = Order::with('lines')
+                ->where('vendor_id',$vendorId)
+               ->where('status', '>=', 1)
+               ->where('status', '<', 5)
+               ->whereDate('created_at', DB::raw('CURDATE()'))
+               ->get();
+
+       return $orders;
     }
 
     public function store(Request $request, $belongsTo = null)
