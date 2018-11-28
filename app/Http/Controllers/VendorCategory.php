@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
-use App\Models\Item;
 use App\Models\ItemCategory;
-use App\Models\Vendor;
 use Illuminate\Support\Facades\Auth;
 
-class VendorItems extends Controller
+use Illuminate\Http\Request;
+
+class VendorCategory extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -37,12 +35,10 @@ class VendorItems extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $vendorId)
-     {
-         
-
+    public function store(Request $request)
+    {   
         $data = [];
-        $item = Item::create($request->all());
+        $item = ItemCategory::create($request->all());
 
         if($request->ajax() || $request->wantsJson())
         {
@@ -60,9 +56,7 @@ class VendorItems extends Controller
              $data['result'] = $item;
             return $data;
         }
-         
-
-     }
+    }
 
     /**
      * Display the specified resource.
@@ -93,17 +87,15 @@ class VendorItems extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $itemId)
+    public function update(Request $request, $id)
     {
-        $item = Item::find($itemId);
-        $item->fill($request->all());
-        
-
+         $category = ItemCategory::find($id);
+        $category->fill($request->all());
        
 
-        if($item->save()){
+        if($category->save()){
             $data['status']='true';
-            $data['result']=$item;
+            $data['result']=$category;
         }
         else{
              $data['status']='false';

@@ -210,7 +210,10 @@ Route::group(['prefix' => 'v1'], function(){
     Route::put('vendors/{id}/order', 'VendorOrder@update');
     Route::delete('vendors/{id}/order', 'VendorOrder@destroy');
 
-    Route::put('vendors/{itemId}/item/', 'Vendoritems@update');
+    Route::put('vendors/{itemId}/item/', 'VendorItems@update');
+    Route::post('vendors/item', 'VendorItems@store');
+    
+    
     
     Route::get('vendors/{vendorId}/dashboard', 'VendorDashboard@index');
 
@@ -218,6 +221,9 @@ Route::group(['prefix' => 'v1'], function(){
 
     Route::post('loginVendor', 'VendorDashboard@showLoginForm');
 
+
+    Route::post('vendors/Category', 'VendorCategory@store');
+    Route::put('vendors/{id}/Category', 'VendorCategory@update');
 
 
 //    Route::resource('testorders', 'TestOrderController');
