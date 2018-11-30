@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Customer;
+use App\Models\Vendor;
 use App\Notifications\Notify;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -25,7 +26,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::group(['prefix' => 'v1'], function(){
 
     Route::get('notify', function () {
-        $customer = Customer::find(954);
+        $customer = Vendor::find(1);
         $data['notification'] = [
             'tag' => 'NOTIFY',
             'title' => 'Title',
@@ -42,8 +43,15 @@ Route::group(['prefix' => 'v1'], function(){
         }
 
         if(!empty($customer->user->expo_token)) {
+            echo 'sent';
             $data['expo_token'] = $customer->user->expo_token;
-            Notify::sendExpoPushNotification($data, $customer->user->id);
+            try {
+                print_r(Notify::sendExpoPushNotification($data, $customer->user->id));
+            } catch (\Exception $exception) {
+                print_r('Expo error details: ' . $exception->getMessage() );
+                print_r('Expo error details: ' . $exception->getTraceAsString() );
+            }
+
         }
     });
 

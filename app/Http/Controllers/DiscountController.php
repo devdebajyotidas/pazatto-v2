@@ -34,7 +34,8 @@ class DiscountController extends Controller
         'MEGHA100',
         'ESWAR50',
         'JAY22',
-        'YASH50'
+        'YASH50',
+        'CHETAN95'
     ];
 
     public function __construct()
@@ -257,6 +258,14 @@ class DiscountController extends Controller
         {
             $respoonse['is_valid'] = 1;
             $respoonse['discounted_amount'] = 100;
+            $respoonse['message'] = "Coupon applied";
+
+            return $respoonse;
+        }
+        else if($coupon == "CHETAN95" &&  intval($data['customer_id']) == 1019 && count($orders) == 0 && intval($data['sub_total']) >= 100)
+        {
+            $respoonse['is_valid'] = 1;
+            $respoonse['discounted_amount'] = 95;
             $respoonse['message'] = "Coupon applied";
 
             return $respoonse;
