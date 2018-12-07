@@ -58,7 +58,7 @@ class Order extends Model
     }
 
     public function vendor(){
-        return $this->belongsTo('App\Models\Vendor');
+        return $this->belongsTo('App\Models\Vendor')->withTrashed();
     }
 
     public function agent(){

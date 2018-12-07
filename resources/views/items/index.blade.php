@@ -206,7 +206,7 @@
                                                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                                                                         <h4 class="modal-title" id="myModalLabel"><b>Edit Item</b></h4>
                                                                     </div>
-                                                                    <form action="{{ url('vendors/' . $vendor->id . '/items/' . $item->id) }}" method="post">
+                                                                    <form action="{{ url('vendors/' . $vendor->id . '/items/' . $item->id) }}" method="post" enctype="multipart/form-data">
                                                                         {{ method_field('put') }}
                                                                         {{ csrf_field() }}
                                                                         <div class="modal-body">
@@ -242,6 +242,24 @@
                                                                                     <option value="1" @if($item->in_stock == 1) {{ 'selected' }} @endif>In Stock</option>
                                                                                     <option value="0" @if($item->in_stock == 0) {{ 'selected' }} @endif>Out of Stock</option>
                                                                                 </select>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label>Type</label>
+                                                                                <br>
+                                                                                <label class="radio-inline"><input name="type" type="radio" value="Veg" @if($item->type == 'Veg') {{ 'checked' }} @endif>Veg</label>
+                                                                                <label class="radio-inline"><input name="type" type="radio" value="Non-Veg" @if($item->type == 'Non-Veg') {{ 'checked' }} @endif>Non-Veg</label>
+                                                                                <label class="radio-inline"><input name="type" type="radio" value="Egg" @if($item->type == 'Egg') {{ 'checked' }} @endif>Egg</label>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label>Description</label>
+                                                                                <textarea class="form-control" name="description" placeholder="Description">
+                                                                                    {{ old('description', $item->description) }}
+                                                                                </textarea>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="">Image</label>
+                                                                                <img src="{{ url($item->image) }}" width="50" height="50">
+                                                                                <input type="file" class="form-control" name="image">
                                                                             </div>
                                                                         </div>
                                                                         <div class="modal-footer">
@@ -307,7 +325,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                     <h4 class="modal-title" id="myModalLabel"><b>Add New Item</b></h4>
                 </div>
-                <form action="{{ url('vendors/' . $vendor->id . '/items') }}" method="post">
+                <form action="{{ url('vendors/' . $vendor->id . '/items') }}" method="post" enctype="multipart/form-data">
                     {{ csrf_field() }}
                     <div class="modal-body">
                         <div class="form-group">
@@ -333,6 +351,30 @@
                         <div class="form-group">
                             <label>Packing Charge</label>
                             <input type="text" class="form-control" name="packing_charge" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label>Stock</label>
+                            <select name="in_stock" id="" class="form-control">
+                                <option value="1">In Stock</option>
+                                <option value="0">Out of Stock</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Type</label>
+                            <br>
+                            <label class="radio-inline"><input name="type" type="radio" value="Veg">Veg</label>
+                            <label class="radio-inline"><input name="type" type="radio" value="Non-Veg">Non-Veg</label>
+                            <label class="radio-inline"><input name="type" type="radio" value="Egg">Egg</label>
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea class="form-control" name="description" placeholder="Description">
+                                {{ old('description') }}
+                            </textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Image</label>
+                            <input type="file" class="form-control" name="image">
                         </div>
                     </div>
                     <div class="modal-footer">

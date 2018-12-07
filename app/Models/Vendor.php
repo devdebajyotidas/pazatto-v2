@@ -61,6 +61,9 @@ class Vendor extends Model implements AuditableContract
 //        'category'
     ];
 
+    public function groups() {
+        return $this->belongsToMany(Group::class);
+    }
 
     public function user()
     {
@@ -81,11 +84,19 @@ class Vendor extends Model implements AuditableContract
     {
         $customerCommission = $this->getAttribute('customer_commission') ? $this->getAttribute('customer_commission') : 0;
 
+//        return $this->load(['categories' => function($query) {
+//            return $query->orderByRaw('ISNULL(priority), priority ASC');
+//        }, 'categories.items' => function($query) use($customerCommission)
+//        {
+//            $query->selectRaw("items.*");
+//            $query->selectRaw("CEIL( items.price + ( $customerCommission/100 ) * items.price ) as price");
+//            $query->selectRaw("CEIL( items.offer_price + ( $customerCommission/100 ) * items.offer_price ) as offer_price");
+//        }]);
         return $this->categories()
-//            ->orderBy('priority', 'DESC')
+//            ->orderBy('id', 'DESC')
             ->orderByRaw('ISNULL(priority), priority ASC')
-            ->orderBy('created_at', 'DESC')
-//            ->orderBy('updated_at', 'DESC')
+//            ->orderBy('created_at', 'DESC')
+            ->orderBy('updated_at', 'DESC')
             ->with(
             [
                 'items' => function($query) use($customerCommission)

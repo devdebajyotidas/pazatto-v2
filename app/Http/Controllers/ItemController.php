@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Image;
 use App\Models\Item;
 use App\Models\ItemCategory;
 use App\Models\Vendor;
@@ -40,16 +41,57 @@ class ItemController extends Controller
 
     public function store(Request $request, $vendorId)
     {
-//        dd($request->all());
-        Item::create($request->all());
+        $data = $request->all();
+
+        if ($request->hasFile('image'))
+        {
+            $file = $request->file('image');
+            $name = time().rand(100,999).".".$file->getClientOriginalExtension();
+            if($file->move('uploads/',$name))
+            {
+                $image = Image::create([
+                    'filename' => $name,
+                    'original' => $file->getClientOriginalName(),
+                    'mime' => $file->getClientMimeType(),
+                ]);
+
+                $data['image'] = url('api/v1/images/' . $image->id);
+            }
+            else
+            {
+                $data['image'] = null;
+            }
+        }
+
+        Item::create($data);
         return redirect()->intended('vendors/' . $vendorId . '/items');
     }
 
     public function update(Request $request, $vendorId, $itemId)
     {
-//        dd($request->all());
+        $data = $request->all();
+
+        if ($request->hasFile('image'))
+        {
+            $file = $request->file('image');
+            $name = time().rand(100,999).".".$file->getClientOriginalExtension();
+            if($file->move('uploads/',$name))
+            {
+                $image = Image::create([
+                    'filename' => $name,
+                    'original' => $file->getClientOriginalName(),
+                    'mime' => $file->getClientMimeType(),
+                ]);
+
+                $data['image'] = url('api/v1/images/' . $image->id);
+            }
+            else
+            {
+                $data['image'] = null;
+            }
+        }
         $item = Item::find($itemId);
-        $item->fill($request->all());
+        $item->fill($data);
         $item->save();
 
         return redirect()->intended('vendors/' . $vendorId . '/items');

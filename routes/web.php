@@ -62,6 +62,7 @@ Route::group(['middleware' => 'auth:web'], function (){
     Route::put('vendors/{vendorId}/items/{itemId}/restore', 'ItemController@restore');
     Route::put('vendors/{id}/take-orders', 'VendorController@takeOrders');
 
+    Route::resource('groups', 'GroupController');
     Route::resource('categories', 'ItemCategoryController');
     Route::resource('images', 'ImageController');
     Route::resource('orders', 'OrderController');

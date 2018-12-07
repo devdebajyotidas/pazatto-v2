@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Customer;
+use App\Models\Group;
 use App\Models\Vendor;
 use App\Notifications\Notify;
 use Illuminate\Http\Request;
@@ -75,12 +76,12 @@ Route::group(['prefix' => 'v1'], function(){
             "ios": {
               "store_url": "https://www.apple.com/in/ios/app-store/",
               "maintenance_mode": false,
-              "version": "1.27.00"
+              "version": "1.27.02"
             },
             "android": {
               "store_url": "https://play.google.com/store/apps/details?id=com.pazatto.app",
               "maintenance_mode": false,
-              "version": "1.27.00"
+              "version": "1.27.02"
             } 
           }
         }';
@@ -124,6 +125,69 @@ Route::group(['prefix' => 'v1'], function(){
         return $paytm->getTxnStatus($data);
     });
 
+    Route::get('groups',function (Request $request) {
+        $groups = Group::with(['vendors' => function($query){
+//                return $query->orderBy('priority', 'ASC');
+            return $query->orderByRaw('ISNULL(priority), priority ASC')->orderBy('created_at', 'DESC');
+        }])->get();
+
+        $coordinates = $request->get('filters');
+
+        if(!isset($coordinates))
+            return $groups;
+
+        $customerCoordinate = formatLatLng($coordinates['coordinate']);
+
+        $restaurants = [];
+
+        foreach ($groups as $index => $service){
+            $vendors = $service->vendors;
+
+            $filtered = $vendors->filter(function ($restaurant, $key) use ($customerCoordinate, $coordinates) {
+                $range = 0;
+//                if (isset($restaurant->paid_delivery_range) && $restaurant->paid_delivery_range > 0)
+//                    $range = $restaurant->paid_delivery_range;
+//                else
+                $range = $restaurant->free_delivery_range;
+
+                Log::debug('vendor: ' . $restaurant->toJSON() );
+                Log::debug('free range: ' . $restaurant->free_delivery_range . ',paid range: '. $restaurant->paid_delivery_range );
+//            return $range;
+
+                $restaurantCoordinate = $restaurant->locations[0];
+//                dd($restaurantCoordinate);
+                $restaurantCoordinate = ['lat' => $restaurantCoordinate->latitude, 'lng' => $restaurantCoordinate->longitude];
+                $distance = calculateDistance($restaurantCoordinate, $customerCoordinate);
+
+                Log::debug('coordinates: ' . $coordinates['coordinate'] );
+                Log::debug('distance: ' . $distance . ', range: '. $range );
+
+                $flag = true;
+                if (doubleval($distance) > doubleval($range)) {
+                    Log::debug('out of range');
+                    $flag = false;
+//                    unset($restaurant);
+//                    unset($services[$index]->vendors[$key]);
+//                    $services[$index]->vendors->forget($key);
+//                    $services[$index]->vendors = collect($services[$index]->vendors->toArray());
+                } else {
+                    $flag = true;
+                    Log::debug('within range');
+                }
+                return $flag;
+            });
+
+            // Filter out vendors closed for the day
+//            $filtered = $filtered->filter(function ($restaurant, $key) {
+//                return  $restaurant->is_open_now;
+//            });
+
+            $restaurants[$index]['id'] = $service->id;
+            $restaurants[$index]['name'] = $service->name;
+            $restaurants[$index]['vendors'] = array_values($filtered->all());
+        }
+        return $restaurants;
+    });
 
     Route::get('vendors',function (Request $request) {
 //        return $request->all();

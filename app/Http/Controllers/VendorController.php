@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Address;
+use App\Models\Group;
 use App\Models\Image;
 use App\Models\Service;
 use App\Models\User;
@@ -37,6 +38,7 @@ class VendorController extends Controller
 
             $data['vendors'] = Vendor::withTrashed()->with(['user','service'])->get();
             $data['services'] = Service::withCount('vendors')->get();
+            $data['groups'] = Group::withCount('vendors')->get();
 //        dd($data);
 
             return view('vendors.index', $data);

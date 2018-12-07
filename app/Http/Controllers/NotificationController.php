@@ -10,6 +10,7 @@ use App\Models\Vendor;
 use App\Notifications\Notify;
 use function dd;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class NotificationController extends Controller
 {
@@ -56,7 +57,12 @@ class NotificationController extends Controller
 
             if(!empty($customer->user->expo_token)) {
                 $data['expo_token'] = $customer->user->expo_token;
-                Notify::sendExpoPushNotification($data, $customer->user->id);
+                try {
+                    Notify::sendExpoPushNotification($data, $customer->user->id);
+                } catch (\Exception $exception) {
+                    Log::debug('Expo error details: ' . $exception->getMessage() );
+                    Log::debug('Expo error details: ' . $exception->getTraceAsString() );
+                }
             }
         }
 
