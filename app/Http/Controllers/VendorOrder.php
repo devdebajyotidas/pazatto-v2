@@ -24,7 +24,7 @@ class VendorOrder extends Controller
                 ->where('vendor_id',$vendorId)
                ->where('status', '>=', 1)
                ->where('status', '<', 5)
-               //->whereDate('created_at', DB::raw('CURDATE()'))
+               ->whereDate('created_at', DB::raw('CURDATE()'))
                ->get();
 
        return $orders;
