@@ -18,9 +18,9 @@ class CreateItemsTable extends Migration
             $table->integer('vendor_id')->nullable();
             $table->integer('item_category_id');
             $table->string('type')->default('');
-            $table->string('image');
+            $table->string('image')->nullable();
             $table->string('name');
-            $table->string('description')->default('');
+            $table->string('description')->nullable();
             $table->double('price');
             $table->double('offer_price')->default(0);
             $table->double('packing_charge')->default(0);

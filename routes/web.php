@@ -65,6 +65,7 @@ Route::group(['middleware' => 'auth:web'], function (){
     Route::resource('groups', 'GroupController');
     Route::resource('categories', 'ItemCategoryController');
     Route::resource('images', 'ImageController');
+    Route::get('orders/history', 'OrderController@history');
     Route::resource('orders', 'OrderController');
     Route::resource('services', 'ServiceController');
     Route::resource('customers', 'CustomerController');

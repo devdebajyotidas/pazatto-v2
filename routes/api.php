@@ -69,19 +69,19 @@ Route::group(['prefix' => 'v1'], function(){
           },
           "support": {
             "whatsapp": "",
-            "phone": "9739275673",
+            "phone": "9900681881",
             "email": ""
           },
           "release": {
             "ios": {
               "store_url": "https://www.apple.com/in/ios/app-store/",
               "maintenance_mode": false,
-              "version": "1.27.02"
+              "version": "1.27.03"
             },
             "android": {
               "store_url": "https://play.google.com/store/apps/details?id=com.pazatto.app",
               "maintenance_mode": false,
-              "version": "1.27.02"
+              "version": "1.27.03"
             } 
           }
         }';

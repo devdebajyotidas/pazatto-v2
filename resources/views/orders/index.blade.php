@@ -6,37 +6,13 @@
         <!-- row -->
         <div class="row m-t-20">
             <div class="col-md-12">
-                <div class="white-box p-0">
+                <div class="white-box">
                     <!-- .left-right-aside-column-->
                     <div class="page-aside">
                         <!-- .left-aside-column-->
-                        <div class="left-aside">
-                            <div class="scrollable">
-                                <ul id="service-list" class="list-style-none">
-                                    <li class="box-label">
-                                        <a href="javascript:void(0)" class="service" data-id="" data-name="">
-                                            All Orders
-                                            <span> {{ count($orders) }} </span>
-                                        </a>
-                                    </li>
-                                    <li class="divider"></li>
-                                    @if(isset($services))
-                                        @foreach($services as $service)
-                                            <li>
-                                                <a href="javascript:void(0)" class="service"
-                                                   data-id="{{ $service->id }}" data-name="{{ $service->name }}">
-                                                    {{ $service->name }}
-                                                    <span class="vendor-count">{{ $service->orders_count  }}</span>
-                                                </a>
-                                            </li>
-                                        @endforeach
-                                    @endif
-                                    <li class="divider"></li>
-                                </ul>
-                            </div>
-                        </div>
+
                         <!-- /.left-aside-column-->
-                        <div class="right-aside">
+                        <div class="#right-aside">
                             <div class="right-page-header">
                             </div>
                             <div class="clearfix"></div>
@@ -55,7 +31,9 @@
                                             <th data-priority="13">Items</th>
                                             <th data-priority="4">Placed On</th>
                                             <th data-priority="11">Notes</th>
+{{--                                            @if(session('role') != 'agent' || (session('role') == 'agent' && $order->agent_id != null) )--}}
                                             <th data-priority="12">Delivery Location</th>
+                                            {{--@endif--}}
                                             <th data-priority="10">Payment Method</th>
                                             <th data-priority="3">Status</th>
                                             <th data-priority="2" width="95%">Action</th>
@@ -80,7 +58,7 @@
                                                             {{ isset($order->customer->first_name) ? $order->customer->first_name : ''}}
                                                             {{ isset($order->customer->last_name) ? $order->customer->last_name : ''}}
                                                             <br>
-                                                            @if(session('role') == 'agent')
+                                                            @if(session('role') == 'agent' && $order->agent_id != null)
                                                                 <a href="tel:{{ $order->customer->user->mobile }}" class="btn btn-sm btn-pure btn-icon btn-outline btn-info">
                                                                     <i class="fa fa-phone"></i>
                                                                     Call
@@ -94,7 +72,23 @@
                                                             @endif
                                                         </td>
                                                         <td>
-                                                            {{ isset($order->agent) ? $order->agent->first_name . " " . $order->agent->last_name : 'N/A'}}
+                                                            @if(session('role') == 'admin')
+                                                                <form method="post" action="{{ url('orders/' . $order->id) }}">
+                                                                    {{ csrf_field() }}
+                                                                    {{ method_field('put') }}
+                                                                    <select name="agent_id">
+                                                                        <option>No Delivery Agent</option>
+                                                                        @foreach($agents as $agent)
+                                                                            <option value="{{ $agent->id }}" @if($agent->id == $order->agent_id) {{ 'selected' }} @endif >
+                                                                                {{ $agent->first_name . ' ' . $agent->last_name }}
+                                                                            </option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                    <button type="submit">Change</button>
+                                                                </form>
+                                                            @else
+                                                                {{ isset($order->agent) ? $order->agent->first_name . " " . $order->agent->last_name : 'N/A'}}
+                                                            @endif
                                                         </td>
                                                         <td>
                                                             @if(isset($order->vendor))
@@ -133,10 +127,13 @@
                                                             Vendor Note: {{ $order->vendor_note }}
                                                         </td>
                                                         <td>
+                                                            @if(session('role') != 'agent' || (session('role') == 'agent' && $order->agent_id != null) )
                                                             <span style="width: 200px">
                                                                 {{ $order->delivery_location }}
                                                             </span>
+                                                            @endif
                                                         </td>
+
                                                         <td>
                                                             {{ $order->payment_method }}
                                                         </td>
@@ -238,7 +235,15 @@
                 }, 10000);
             }, 180000);
 
-            var table = initDataTable('#orders-table');
+            var table = initDataTable('#orders-table', [
+                {
+                    text: 'View Order History',
+//                        className : 'btn btn-info',
+                    action: function (e, dt, node, config) {
+                        window.location = 'orders/history'
+                    }
+                },
+            ]);
 
             $(document).on('click', '.order-action', function (event) {
                 var that = this;
@@ -272,5 +277,5 @@
                 window.open("https://maps.google.com/maps?daddr=" + lat + "," + lng + "&amp;ll=");
         }
     </script>
-    
+
 @endsection

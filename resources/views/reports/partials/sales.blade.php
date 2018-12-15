@@ -59,6 +59,9 @@
                                     <th class="text-center">Discount</th>
                                 {{--@endif--}}
                                 <th class="text-center">Tax</th>
+                                @if($for != 'VENDOR')
+                                    <th class="text-center">Customer Commission</th>
+                                @endif
                                 <th class="text-center">Total</th>
                                 <th class="text-center">Payment Method</th>
                             </tr>
@@ -85,36 +88,54 @@
 
                             @foreach($orders as $key => $order)
                                 @php
-                                    if($for == 'VENDOR')
-                                        $subTotal += floor($order->sub_total - ($vendor->customer_commission/100) * $order->sub_total);
-                                    else
-                                        $subTotal += $order->sub_total;
+                                    //if($for == 'VENDOR')
+                                      //  $subTotal += floor($order->sub_total * (100/(100 + $vendor->customer_commission)) );
+                                    //else
+                                      //  $subTotal += $order->sub_total;
+
+                                        $subTotal += floor($order->sub_total * (100/(100 + $vendor->customer_commission)) );
 
                                         $packingCharge += $order->packing_charge;;
                                         $deliveryCharge += $order->delivery_charge;;
-                                        $tax += $order->tax;;
-                                       $discount += $order->discount;
-                                        $total += $order->total;
-
-                                        if($order->payment_method == "COD")
-                                            $cashPayment += $order->total;
+                                        $tax += $order->tax;
+                                        $discount += $order->discount;
+                                        //$total += $order->total;
+                                        if($for == 'VENDOR')
+                                            $total += floor($order->total * (100/(100 + $vendor->customer_commission)));
                                         else
-                                            $onlinePayment += $order->total;
+                                            $total += $order->total;
+
+                                        $customerCommission += ceil(($vendor->customer_commission/100) * floor($order->sub_total * (100/(100 + $vendor->customer_commission)) ));
+
+
+                                        // Calculate based the user role
+                                        if($order->payment_method == "COD")
+                                            $cashPayment += $for == 'VENDOR' ? floor((100/(100 + $vendor->customer_commission)) * $order->total) : $order->total;
+                                        else
+                                            $onlinePayment += $for == 'VENDOR' ? floor((100/(100 + $vendor->customer_commission)) * $order->total) : $order->total;
                                 @endphp
                                 <tr>
                                     <td class="text-center">{{ $order->id }}</td>
-                                    @if($for == 'VENDOR')
-                                    <td class="text-center">{{ floor($order->sub_total - ($vendor->customer_commission/100) * $order->sub_total) }}</td>
-                                    @else
-                                    <td class="text-center">{{ $order->sub_total }}</td>
-                                    @endif
+                                    {{--@if($for == 'VENDOR')--}}
+                                    {{--<td class="text-center">{{ floor($order->sub_total * (100/(100 + $vendor->customer_commission)) ) }}</td>--}}
+                                    {{--@else--}}
+                                    {{--<td class="text-center">{{ $order->sub_total }}</td>--}}
+                                    {{--@endif--}}
+                                    <td class="text-center">{{ floor($order->sub_total * (100/(100 + $vendor->customer_commission)) ) }}</td>
                                     <td class="text-center">{{ $order->packing_charge }}</td>
                                     {{--@if($for != 'VENDOR')--}}
                                     <td class="text-center">{{ $order->delivery_charge }}</td>
                                     <td class="text-center">-{{ $order->discount }}</td>
                                     {{--@endif--}}
                                     <td class="text-center">{{ $order->tax }}</td>
-                                    <td class="text-center">{{ $order->total }}</td>
+                                    @if($for != 'VENDOR')
+                                        <td class="text-center">{{ ceil(($vendor->customer_commission/100) * $subTotal) }}</td>
+                                    @endif
+                                    @if($for == 'VENDOR')
+                                        <td class="text-center">{{ floor((100/(100 + $vendor->customer_commission)) * $order->total) }}</td>
+                                    @else
+                                        <td class="text-center">{{ $order->total }}</td>
+                                    @endif
                                     <td class="text-center">{{ $order->payment_method }}</td>
                                 </tr>
                             @endforeach
@@ -133,13 +154,17 @@
                         <p>Discount: -{{ $discount }}</p>
                         {{--@endif--}}
                         <hr>
-                        <p>Total: {{ $total }}</p>
+                        @if($for != 'VENDOR')
+                            <p>Total: {{ $total }}</p>
+                        @else
+                            <p>Total: {{ $total - $deliveryCharge }}</p>
+                        @endif
                         <hr>
                         <p><small>Online Payment:</small> {{ $onlinePayment }}</p>
                         <p><small>Cash Payment: </small>{{ $cashPayment }}</p>
                         <hr>
                         @php
-                            $customerCommission = ceil(($vendor->customer_commission/100) * $subTotal)
+                            //$customerCommission = ceil(($vendor->customer_commission/100) * $subTotal)
                         @endphp
                         @if($for != 'VENDOR')
                             <p>Customer Commission ({{ $vendor->customer_commission }}%) :  {{ $customerCommission }} </p>
@@ -150,7 +175,13 @@
                             {{--<h3><b>Total :</b> {{ $total - ceil( (($vendor->customer_commission + $vendor->pazatto_commission)/100) * $total) }}</h3>--}}
                             <h3>
                                 <b>Amount to be credited: </b>
-                                {{ $amountToCredit = ($subTotal + $packingCharge) - $vendorCommission - $customerCommission - $paymentGatewayFees }}
+{{--                                {{ $amountToCredit = ($subTotal + $packingCharge) - $vendorCommission - $customerCommission - $paymentGatewayFees }}--}}
+{{--                                {{ $amountToCredit = $total - $vendorCommission - $customerCommission - $paymentGatewayFees }}--}}
+                                @if($for != 'VENDOR')
+                                    {{ $amountToCredit = $total - $vendorCommission - $customerCommission - $paymentGatewayFees - $deliveryCharge }}
+                                @else
+                                    {{ $amountToCredit = $total - $vendorCommission - $paymentGatewayFees - $deliveryCharge }}
+                                @endif
                             </h3>
                         @if($for != 'VENDOR')
                         <h3>
