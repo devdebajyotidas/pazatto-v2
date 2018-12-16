@@ -17,6 +17,9 @@
                                         <a href="javascript:void(0)" class="service" data-id="" data-name="">
                                             All Orders
                                             <span> {{ count($orders) }} </span>
+                                            <br>
+                                            <span> {{ print_r($error_log) }} </span>
+
                                         </a>
                                     </li>
                                     <li class="divider"></li>

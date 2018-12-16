@@ -50,9 +50,11 @@ class OrderController extends Controller
                 })
                 ->orderBy('id','desc')->get();
         }
-
+        $data['error_log']= $vendors;
         return view('orders.index', $data);
     }
+
+    
 
     public function create()
     {

@@ -229,6 +229,17 @@ Route::group(['prefix' => 'v1'], function(){
 //    Route::resource('testorders', 'TestOrderController');
 //    Route::resource('customers.testorders', 'TestOrderController');
 //    Route::resource('vendors.testorders', 'TestOrderController');
+
+
+    Route::get('Agent/{id}/Order', 'AgentOrder@index');
+
+    Route::get('Agent/{AgentId}/orderdetails', 'AgentOrderDetails@index');
+    Route::get('Agent/{AgentId}/orderdetails/{date}', 'AgentOrderDetails@show');
+
+
+
+
+
 });
 
  function calculateDistance($point1, $point2, $unit = 'km', $decimals = 2) {
