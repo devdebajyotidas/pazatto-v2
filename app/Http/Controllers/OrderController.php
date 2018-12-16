@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Agent;
+use App\Models\Customer;
 use App\Models\Order;
 use App\Models\OrderLine;
 use App\Models\Service;
+use App\Models\Vendor;
+use function dd;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Notifications\Notify;
@@ -121,13 +124,22 @@ class OrderController extends Controller
 
     public function show($id)
     {
+        $data['page'] = 'orders';
+        $data['role'] = session('role');
+        $data['prefix']  = session('role');
 
+        $data['order'] = Order::with(['lines','customer.user','vendor', 'agent'])->orderBy('id','desc')->find($id)->first();
+        $data['services'] = Service::with(['vendors'])->get();
+        $data['agents'] = Agent::all();
+        $data['customers'] = Customer::all();
+
+        return view('orders.show', $data);
     }
 
     public function update(Request $request, $id)
     {
         $data = $request->all();
-
+        dd($data);
         $order = Order::find($id);
 
         if(!isset($data['customer_note']) || is_null($data['customer_note']))
