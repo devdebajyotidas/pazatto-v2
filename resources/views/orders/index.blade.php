@@ -10,7 +10,6 @@
                     <!-- .left-right-aside-column-->
                     <div class="page-aside">
                         <!-- .left-aside-column-->
-
                         <!-- /.left-aside-column-->
                         <div class="#right-aside">
                             <div class="right-page-header">
@@ -143,6 +142,16 @@
                                                             </span>
                                                         </td>
                                                         <td>
+                                                            @if(session('role') == 'admin')
+                                                                <a type="button"
+                                                                   href="{{ url('/orders/'. $order->id) }}"
+                                                                   class="btn btn-sm btn-info btn-icon btn-pure btn-outline"
+                                                                   data-toggle="tooltip" data-original-title="Edit" data-action="Edit">
+                                                                    <i class="ti-pencil" aria-hidden="true"></i>
+                                                                    Edit
+                                                                </a>
+                                                            @endif
+
                                                             @if(session('role') == 'agent' && $order->agent_id == null)
                                                                 <form action="{{ url('orders/'. $order->id) }}" method="post">
                                                                     {{ method_field('put') }}
@@ -236,6 +245,15 @@
             }, 180000);
 
             var table = initDataTable('#orders-table', [
+                @if($role == 'admin')
+                {
+                    text: 'Create New Order',
+//                        className : 'btn btn-info',
+                    action: function (e, dt, node, config) {
+                        window.location = 'orders/create'
+                    }
+                },
+                @endif
                 {
                     text: 'View Order History',
 //                        className : 'btn btn-info',

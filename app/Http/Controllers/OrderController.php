@@ -8,6 +8,7 @@ use App\Models\Order;
 use App\Models\OrderLine;
 use App\Models\Service;
 use App\Models\Vendor;
+use function count;
 use function dd;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -56,7 +57,7 @@ class OrderController extends Controller
                 })
                 ->orderBy('id','desc')->get();
         }
-
+//        $data['error_log']= $vendors;
         return view('orders.index', $data);
     }
 
@@ -96,7 +97,15 @@ class OrderController extends Controller
 
     public function create()
     {
+        $data['page'] = 'orders';
+        $data['role'] = session('role');
+        $data['prefix']  = session('role');
 
+        $data['services'] = Service::with(['vendors'])->get();
+        $data['agents'] = Agent::all();
+        $data['customers'] = Customer::all();
+
+        return view('orders.show', $data);
     }
 
     public function store(Request $request)
@@ -109,6 +118,9 @@ class OrderController extends Controller
         if(!isset($data['vendor_note']) || is_null($data['vendor_note']))
             $data['vendor_note'] = "";
 
+        if(!isset($data['status']))
+            $data['status'] = 1;
+
         $order = Order::create($data);
 
         foreach ($data['items'] as $item)
@@ -119,7 +131,10 @@ class OrderController extends Controller
 
         Notify::sendOrderNotification($order);
 
-        return $order->load('lines');
+        if($request->ajax()){
+            return $order->load('lines');
+        }
+        return redirect('orders')->with('success', 'Order has been created successfully');
     }
 
     public function show($id)
@@ -128,7 +143,7 @@ class OrderController extends Controller
         $data['role'] = session('role');
         $data['prefix']  = session('role');
 
-        $data['order'] = Order::with(['lines','customer.user','vendor', 'agent'])->orderBy('id','desc')->find($id)->first();
+        $data['order'] = Order::with(['lines','customer.user','vendor', 'agent'])->orderBy('id','desc')->find($id);
         $data['services'] = Service::with(['vendors'])->get();
         $data['agents'] = Agent::all();
         $data['customers'] = Customer::all();
@@ -139,7 +154,7 @@ class OrderController extends Controller
     public function update(Request $request, $id)
     {
         $data = $request->all();
-        dd($data);
+//        dd($data);
         $order = Order::find($id);
 
         if(!isset($data['customer_note']) || is_null($data['customer_note']))
@@ -154,11 +169,22 @@ class OrderController extends Controller
         }
 
         $order->fill($data);
+
+        if(isset($data['items']) && count($data['items'])) {
+            $order->lines()->delete();
+            foreach ($data['items'] as $line) {
+                $lineItem = new OrderLine();
+                $lineItem->fill($line);
+                $lineItem->save();
+
+                $order->lines()->save($lineItem);
+            }
+        }
         $order->save();
 
         Notify::sendOrderNotification($order);
 
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Order has been updated successfully');
     }
 
     public function delete(Request $request, $id)
