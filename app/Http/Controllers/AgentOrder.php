@@ -32,7 +32,7 @@ class AgentOrder extends Controller
         $data['services'] = Service::withCount('orders')->get();
 
 
-             $data['orders'] = Order::with(['lines' ,'agent'])->whereIn('vendor_id', [1,2])
+             $data['orders'] = Order::with(['lines','customer.user', 'vendor','agent'])->whereIn('vendor_id', [1,2])
                 ->whereNotIn('status',  [-1, 0, 1, 5])
                 ->where(function($query) use($agent_id){
                     $query->where('agent_id','=', $agent_id)
