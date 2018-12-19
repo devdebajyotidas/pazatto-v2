@@ -33,7 +33,7 @@ class AgentOrder extends Controller
 
 
              $data['orders'] = Order::with(['lines','customer.user', 'vendor','agent'])->whereIn('vendor_id', [1,2])
-                ->whereNotIn('status',  [-1, 0, 1, 5])
+                ->whereNotIn('status',  [-1, 0, 1])
                 ->where(function($query) use($agent_id){
                     $query->where('agent_id','=', $agent_id)
                         ->orWhere('agent_id', '=', null);
