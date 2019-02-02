@@ -71,7 +71,9 @@ class OrderController extends Controller
         $data['role'] = session('role');
         $data['prefix']  = session('role');
 
-        $data['orders'] = Order::with(['lines','customer.user','vendor', 'agent'])->orderBy('id','desc')->get();
+        $data['orders'] = Order::with(['lines','customer.user','vendor' => function($query) {
+            return $query->withTrashed();
+        }, 'agent'])->orderBy('id','desc')->get();
         $data['services'] = Service::withCount('orders')->get();
 //        dd($data);
 
@@ -120,6 +122,8 @@ class OrderController extends Controller
 
         if(!isset($data['status']))
             $data['status'] = 1;
+
+        $data['agent_id'] = null;
 
         $order = Order::create($data);
 

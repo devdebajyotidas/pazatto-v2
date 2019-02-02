@@ -37,32 +37,51 @@ class VendorItems extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $vendorId)
-     {
-         
+//    public function store(Request $request, $vendorId)
+//     {
+//
+//
+//        $data = [];
+//        $item = Item::create($request->all());
+//
+//        if($request->ajax() || $request->wantsJson())
+//        {
+//
+//            $data['result'] =  response()->json($item);
+//            $data['status'] = 'false';
+//
+//            return $data;
+//        }
+//        else
+//        {
+////          return redirect()->intended('items');
+//            $data=[];
+//            $data['status'] = 'true';
+//             $data['result'] = $item;
+//            return $data;
+//        }
+//     }
 
-        $data = [];
+    public function store(Request $request)
+    {
+
+
         $item = Item::create($request->all());
 
-        if($request->ajax() || $request->wantsJson())
-        {
-             
-            $data['result'] =  response()->json($item);
+        if ($request->ajax() || $request->wantsJson()) {
+
+            $data['result'] = response()->json($item);
             $data['status'] = 'false';
 
             return $data;
-        }
-        else
-        {
+        } else {
 //          return redirect()->intended('items');
-            $data=[];
+            $data = [];
             $data['status'] = 'true';
-             $data['result'] = $item;
+            $data['result'] = $item;
             return $data;
         }
-         
-
-     }
+    }
 
     /**
      * Display the specified resource.

@@ -58,7 +58,7 @@ class User extends Authenticatable implements AuditableContract, UserResolver
 
     public function account()
     {
-        return $this->morphTo('account');
+        return $this->morphTo('account')->withTrashed();
     }
 
     public function oauth()

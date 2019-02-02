@@ -22,9 +22,10 @@ class ItemController extends Controller
         $data['role'] = session('role');
         $data['prefix']  = session('role');
 
-        $vendor = Vendor::find($vendorId); //Auth::user()->account;
+        $vendor = Vendor::withTrashed()->find($vendorId); //Auth::user()->account;
         $data['vendor'] = $vendor;
-        $data['categories'] = ItemCategory::withCount(['items'])
+        $data['categories'] = ItemCategory::withTrashed()
+            ->withCount(['items'])
             ->where('vendor_id', '=', $vendor->id)
             ->orderBy('priority', 'DESC')
 //            ->orderBy('updated_at', 'DESC')

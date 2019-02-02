@@ -1,45 +1,52 @@
+<script>
+    window.onerror = function (error) {
+        console.log(error);
+        return true;
+    }
+</script>
+
 <!-- jQuery -->
-<script src="https://wrappixel.com/demos/admin-templates/pixeladmin/plugins/bower_components/jquery/dist/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <!-- Bootstrap Core JavaScript -->
 <script src="{{ asset('assets/bootstrap/dist/js/bootstrap.min.js') }}"></script>
 <!-- Menu Plugin JavaScript -->
-<script src="https://wrappixel.com/demos/admin-templates/pixeladmin/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.js"></script>
+{{--<script src="http://pazatto.com/bower_components/sidebar-nav/dist/sidebar-nav.min.js"></script>--}}
 <!--slimscroll JavaScript -->
 <script src=" {{ asset('assets/js/jquery.slimscroll.js') }}"></script>
 <!--Wave Effects -->
 <script src="{{ asset('assets/js/waves.js') }}"></script>
 <!--weather icon -->
-<script src="https://wrappixel.com/demos/admin-templates/pixeladmin/plugins/bower_components/skycons/skycons.js"></script>
-<!--Morris JavaScript -->
-<script src="https://wrappixel.com/demos/admin-templates/pixeladmin/plugins/bower_components/raphael/raphael-min.js"></script>
-<script src="https://wrappixel.com/demos/admin-templates/pixeladmin/plugins/bower_components/morrisjs/morris.js"></script>
-<!-- jQuery for carousel -->
-<script src="https://wrappixel.com/demos/admin-templates/pixeladmin/plugins/bower_components/owl.carousel/owl.carousel.min.js"></script>
-<script src="https://wrappixel.com/demos/admin-templates/pixeladmin/plugins/bower_components/owl.carousel/owl.custom.js"></script>
-<!-- Sparkline chart JavaScript -->
-<script src="https://wrappixel.com/demos/admin-templates/pixeladmin/plugins/bower_components/jquery-sparkline/jquery.sparkline.min.js"></script>
-<script src="https://wrappixel.com/demos/admin-templates/pixeladmin/plugins/bower_components/jquery-sparkline/jquery.charts-sparkline.js"></script>
-<!--Counter js -->
-<script src="https://wrappixel.com/demos/admin-templates/pixeladmin/plugins/bower_components/waypoints/lib/jquery.waypoints.js"></script>
-<script src="https://wrappixel.com/demos/admin-templates/pixeladmin/plugins/bower_components/counterup/jquery.counterup.min.js"></script>
+{{--<script src="http://pazatto.com/bower_components/skycons/skycons.js"></script>--}}
+{{--<!--Morris JavaScript -->--}}
+{{--<script src="http://pazatto.com/bower_components/raphael/raphael-min.js"></script>--}}
+{{--<script src="http://pazatto.com/bower_components/morrisjs/morris.js"></script>--}}
+{{--<!-- jQuery for carousel -->--}}
+{{--<script src="http://pazatto.com/bower_components/owl.carousel/owl.carousel.min.js"></script>--}}
+{{--<script src="http://pazatto.com/bower_components/owl.carousel/owl.custom.js"></script>--}}
+{{--<!-- Sparkline chart JavaScript -->--}}
+{{--<script src="http://pazatto.com/bower_components/jquery-sparkline/jquery.sparkline.min.js"></script>--}}
+{{--<script src="http://pazatto.com/bower_components/jquery-sparkline/jquery.charts-sparkline.js"></script>--}}
+{{--<!--Counter js -->--}}
+{{--<script src="http://pazatto.com/bower_components/waypoints/lib/jquery.waypoints.js"></script>--}}
+{{--<script src="http://pazatto.com/bower_components/counterup/jquery.counterup.min.js"></script>--}}
 <!-- Custom Theme JavaScript -->
 <script src="{{ asset('assets/js/custom.min.js') }}"></script>
 {{--<script src="{{ asset('assets/js/widget.js') }}"></script>--}}
 <!--Style Switcher -->
-<script src="https://wrappixel.com/demos/admin-templates/pixeladmin/plugins/bower_components/styleswitcher/jQuery.style.switcher.js"></script>
+{{--<script src="http://pazatto.com/bower_components/styleswitcher/jQuery.style.switcher.js"></script>--}}
 
-<script src="https://wrappixel.com/demos/admin-templates/pixeladmin/plugins/bower_components/calendar/jquery-ui.min.js"></script>
-{{--<script src="https://wrappixel.com/demos/admin-templates/pixeladmin/plugins/bower_components/moment/moment.js"></script>--}}
+{{--<script src="http://pazatto.com/bower_components/calendar/jquery-ui.min.js"></script>--}}
+{{--<script src="http://pazatto.com/bower_components/moment/moment.js"></script>--}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
-<script src='https://wrappixel.com/demos/admin-templates/pixeladmin/plugins/bower_components/calendar/dist/fullcalendar.min.js'></script>
-{{--<script src="https://wrappixel.com/demos/admin-templates/pixeladmin/plugins/bower_components/calendar/dist/jquery.fullcalendar.js"></script>--}}
+{{--<script src='http://pazatto.com/bower_components/calendar/dist/fullcalendar.min.js'></script>--}}
+{{--<script src="http://pazatto.com/bower_components/calendar/dist/jquery.fullcalendar.js"></script>--}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.min.js"></script>
-<script src="https://wrappixel.com/demos/admin-templates/pixeladmin/plugins/bower_components/toast-master/js/jquery.toast.js"></script>
+{{--<script src="http://pazatto.com/bower_components/toast-master/js/jquery.toast.js"></script>--}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.0.6/sweetalert2.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js"></script>
 
 <!-- Datatables -->
-<script src="https://wrappixel.com/demos/admin-templates/pixeladmin/plugins/bower_components/datatables/jquery.dataTables.min.js"></script>
+<script src="http://pazatto.com/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js"></script>
 <!-- start - This is for export functionality only -->
 <script src="https://cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js"></script>
@@ -55,30 +62,30 @@
 <script src="https://cdn.datatables.net/responsive/2.2.1/js/responsive.bootstrap.min.js"></script>
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.min.js"></script>
+{{--<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.min.js"></script>--}}
 
 
-<script src="https://wrappixel.com/demos/admin-templates/pixeladmin/plugins/bower_components/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://wrappixel.com/demos/admin-templates/pixeladmin/plugins/bower_components/jquery-wizard-master/dist/jquery-wizard.min.js"></script>
+{{--<script src="http://pazatto.com/bower_components/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>--}}
+{{--<script src="https://code.highcharts.com/highcharts.js"></script>--}}
+{{--<script src="http://pazatto.com/bower_components/jquery-wizard-master/dist/jquery-wizard.min.js"></script>--}}
 
-<!-- Range slider  -->
-<script src="https://wrappixel.com/demos/admin-templates/pixeladmin/plugins/bower_components/ion-rangeslider/js/ion-rangeSlider/ion.rangeSlider.min.js"></script>
+{{--<!-- Range slider  -->--}}
+{{--<script src="http://pazatto.com/bower_components/ion-rangeslider/js/ion-rangeSlider/ion.rangeSlider.min.js"></script>--}}
 
-<script src="https://wrappixel.com/demos/admin-templates/pixeladmin/plugins/bower_components/switchery/dist/switchery.min.js"></script>
+{{--<script src="http://pazatto.com/bower_components/switchery/dist/switchery.min.js"></script>--}}
 
-<!-- Clock Plugin JavaScript -->
-<script src="http://weareoutman.github.io/clockpicker/dist/jquery-clockpicker.min.js"></script>
+{{--<!-- Clock Plugin JavaScript -->--}}
+{{--<script src="http://weareoutman.github.io/clockpicker/dist/jquery-clockpicker.min.js"></script>--}}
 
 
-<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAZ-U6HYoK9KhSPCOZrK-Q8pPYS09ADImE&libraries=places"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/geocomplete/1.7.0/jquery.geocomplete.min.js"></script>
+{{--<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAZ-U6HYoK9KhSPCOZrK-Q8pPYS09ADImE&libraries=places"></script>--}}
+{{--<script src="https://cdnjs.cloudflare.com/ajax/libs/geocomplete/1.7.0/jquery.geocomplete.min.js"></script>--}}
 
-<!-- Date Picker Plugin JavaScript -->
-<script src="https://wrappixel.com/demos/admin-templates/pixeladmin/plugins/bower_components/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
-<!-- Date range Plugin JavaScript -->
-<script src="https://wrappixel.com/demos/admin-templates/pixeladmin/plugins/bower_components/timepicker/bootstrap-timepicker.min.js"></script>
-<script src="https://wrappixel.com/demos/admin-templates/pixeladmin/plugins/bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+{{--<!-- Date Picker Plugin JavaScript -->--}}
+{{--<script src="http://pazatto.com/bower_components/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>--}}
+{{--<!-- Date range Plugin JavaScript -->--}}
+{{--<script src="http://pazatto.com/bower_components/timepicker/bootstrap-timepicker.min.js"></script>--}}
+{{--<script src="http://pazatto.com/bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>--}}
 
 <script src="{{ asset('assets/js/cbpFWTabs.js') }}"></script>
 <script src="{{ asset('assets/js/app.js') }}"></script>

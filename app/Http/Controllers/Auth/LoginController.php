@@ -74,6 +74,8 @@ class LoginController extends Controller
                 session(['role' => 'customer' ]);
             } else if ($user->hasRole('agent')) {
                 session(['role' => 'agent' ]);
+                \auth()->logout();
+                return redirect()->intended('restricted');
 //                $this->redirectTo = '/orders';
             }
         }

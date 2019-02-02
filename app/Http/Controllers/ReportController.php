@@ -33,7 +33,7 @@ class ReportController extends Controller
         $data['role'] = session('role');
         $data['prefix']  = session('role');
 
-        $data['vendors']  = Vendor::with(
+        $data['vendors']  = Vendor::withTrashed()->with(
             [
                 'orders' => function($query)
                 {
@@ -183,7 +183,7 @@ ORDER BY DATE(o1.created_at) DESC");
     public function details()
     {
         $data = request()->all();
-        $data['vendor'] = Vendor::find($data['vendor']);
+        $data['vendor'] = Vendor::withTrashed()->find($data['vendor']);
         $data['order'] = Order::find(133);
         $data['page'] = $data['mode'] . '-details';
         $data['for'] = strtoupper(session('role'));

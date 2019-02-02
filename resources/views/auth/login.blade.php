@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" type="image/png" sizes="16x16"
-          href="https://wrappixel.com/demos/admin-templates/pixeladmin/plugins/images/favicon.png">
+          href="http://pazatto.com/images/favicon.png">
     <title>Pazatto - Login</title>
     <!-- Bootstrap Core CSS -->
     <link href="{{url('assets/bootstrap/dist/css/bootstrap.min.css')}}" rel="stylesheet">
@@ -122,11 +122,12 @@
     </div>
 </section>
 <!-- jQuery -->
-<script src="https://wrappixel.com/demos/admin-templates/pixeladmin/plugins/bower_components/jquery/dist/jquery.min.js"></script>
+{{--<script src="http://pazatto.com/bower_components/jquery/dist/jquery.min.js"></script>--}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <!-- Bootstrap Core JavaScript -->
 <script src="{{url('assets/bootstrap/dist/js/bootstrap.min.js')}}"></script>
 <!-- Menu Plugin JavaScript -->
-<script src="https://wrappixel.com/demos/admin-templates/pixeladmin/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.js"></script>
+<script src="http://pazatto.com/bower_components/sidebar-nav/dist/sidebar-nav.min.js"></script>
 
 <!--slimscroll JavaScript -->
 <script src="{{url('assets/js/jquery.slimscroll.js')}}"></script>
@@ -135,6 +136,6 @@
 <!-- Custom Theme JavaScript -->
 <script src="{{url('assets/js/custom.min.js')}}"></script>
 <!--Style Switcher -->
-<script src="https://wrappixel.com/demos/admin-templates/pixeladmin/plugins/bower_components/styleswitcher/jQuery.style.switcher.js"></script>
+<script src="http://pazatto.com/bower_components/styleswitcher/jQuery.style.switcher.js"></script>
 </body>
 </html>

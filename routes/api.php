@@ -269,6 +269,11 @@ Route::group(['prefix' => 'v1'], function(){
         return $v->load(['menu']);
     });
 
+    Route::get('vendors/{id}/details',function ($id){
+        $v = \App\Models\Vendor::find($id);
+        return $v->load(['locations', 'user']);
+    });
+
     Route::put('vendors/{id}', 'VendorController@update');
 
     Route::resource('orders', 'OrderController');

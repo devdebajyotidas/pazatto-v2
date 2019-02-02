@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use DateTime;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use function in_array;
 use OwenIt\Auditing\Auditable;
 use OwenIt\Auditing\Contracts\Auditable as AuditableContract;
 
@@ -62,12 +63,12 @@ class Vendor extends Model implements AuditableContract
     ];
 
     public function groups() {
-        return $this->belongsToMany(Group::class);
+        return $this->belongsToMany(Group::class)->withTrashed();
     }
 
     public function user()
     {
-        return $this->morphOne('App\Models\User','account');
+        return $this->morphOne('App\Models\User','account')->withTrashed();
     }
 
     public function photos()
@@ -112,11 +113,13 @@ class Vendor extends Model implements AuditableContract
     public function categories()
     {
         return $this->hasMany('App\Models\ItemCategory');
+//        return $this->hasMany('App\Models\ItemCategory')->withTrashed();
     }
 
     public function items()
     {
-        return $this->hasManyThrough('App\Models\Item','App\Models\ItemCategory');
+//        return $this->hasManyThrough('App\Models\Item','App\Models\ItemCategory');
+        return $this->hasManyThrough('App\Models\Item','App\Models\ItemCategory')->withTrashed();
     }
 
     public function service()
@@ -126,16 +129,18 @@ class Vendor extends Model implements AuditableContract
 
     public function orders()
     {
-        return $this->hasMany('App\Models\Order');
+        return $this->hasMany('App\Models\Order')->withTrashed();
     }
 
     public function agents()
     {
-        return $this->belongsToMany('App\Models\Agent');
+        return $this->belongsToMany('App\Models\Agent')->withTrashed();
     }
 
     public function getIsOpenNowAttribute()
     {
+        if(in_array($this->attributes['id'], [29, 30]))
+            return 1;
 //        if($this->attributes['is_taking_order'])
 //        $now = Carbon::now()->format('h:i');
         date_default_timezone_set("Asia/Kolkata");

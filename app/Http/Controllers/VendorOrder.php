@@ -20,11 +20,12 @@ class VendorOrder extends Controller
      */
     public function index($vendorId)
     {
-          $orders = Order::with('lines')
+          $orders = Order::with(['lines', 'agent.user'])
                 ->where('vendor_id',$vendorId)
                ->where('status', '>=', 1)
                ->where('status', '<', 5)
-               ->whereDate('created_at', DB::raw('CURDATE()'))
+//               ->whereDate('created_at', DB::raw('CURDATE()'))
+              ->whereDate('created_at', '=' ,  date('Y-m-d'))
                ->get();
 
        return $orders;
@@ -115,6 +116,7 @@ class VendorOrder extends Controller
 //            dd($vendor->is_taking_orders);
              $result['status'] = "true";
              $result['is_taking_orders'] = $vendor->is_taking_orders;
+            $result['data'] = $vendor;
         }
         catch (\Exception $exception)
         {

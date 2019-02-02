@@ -27,7 +27,7 @@ class  Customer extends Model implements  AuditableContract
 
     protected $with = [
         'user',
-        'addresses'
+//        'addresses'
     ];
 
 //    protected $appends = [

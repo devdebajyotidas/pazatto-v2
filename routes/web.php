@@ -13,12 +13,17 @@
 
 
 use App\Notifications\Notify;
+use Illuminate\Support\Facades\DB;
 
 //use Illuminate\Routing\Route;
 date_default_timezone_set("Asia/Kolkata");
 
 Route::get('phpinfo', function (){
     phpinfo();
+});
+
+Route::get('testdate', function () {
+    echo DB::raw('CURDATE()');
 });
 
 Auth::routes();
@@ -56,6 +61,7 @@ Route::group(['middleware' => 'auth:web'], function (){
 
 
     Route::resource('vendors', 'VendorController');
+    Route::put('vendors/{id}/restore', 'VendorController@restore');
 
 //Route::resource('items', 'ItemController');
     Route::resource('vendors.items', 'ItemController');
@@ -137,11 +143,18 @@ Route::get('contact', function (){
     $data['role'] = 'guest';
     return view('contact', $data);
 });
+Route::post('contact', function (){
+    return redirect('contact');
+});
 
 Route::get('about-us', function (){
     $data['page'] = 'policies';
     $data['role'] = 'guest';
     return view('contact', $data);
+});
+
+Route::get('/support', function() {
+    return redirect('contact');
 });
 
 Route::get('/time', function() {

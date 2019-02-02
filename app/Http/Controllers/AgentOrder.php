@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Agent;
 use App\Models\Order;
 use App\Models\OrderLine;
 use App\Models\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Notifications\Notify;
+use Illuminate\Support\Facades\DB;
 use function is_null;
 use const null;
 
@@ -27,19 +29,21 @@ class AgentOrder extends Controller
     public function index($agent_id)
     {
 
-        $data['page'] = 'orders';
+//        $data['page'] = 'orders';
 
-        $data['services'] = Service::withCount('orders')->get();
+//        $data['services'] = Service::withCount('orders')->get();
 
-
-             $data['orders'] = Order::with(['lines','customer.user', 'vendor','agent'])->whereIn('vendor_id', [1,2])
+            $vendors =  Agent::find($agent_id)->vendors()->pluck('vendor_id')->toArray();
+             $data['orders'] = Order::with(['lines','customer.user', 'vendor','agent'])
+                 ->whereIn('vendor_id', $vendors)
                 ->whereNotIn('status',  [-1, 0, 1])
                 ->where(function($query) use($agent_id){
                     $query->where('agent_id','=', $agent_id)
                         ->orWhere('agent_id', '=', null);
                 })
-
-                ->orderBy('id','desc')->get();
+//                 ->whereDate('created_at', DB::raw('CURDATE()'))
+                 ->whereDate('created_at', '=' ,  date('Y-m-d'))
+                 ->orderBy('id','desc')->get();
 
         // }
 

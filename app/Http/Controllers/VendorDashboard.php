@@ -28,13 +28,14 @@ class VendorDashboard extends Controller
 //        {
            $activeOrders = Order::where('status', '>=', 1)
                ->where('status', '<', 5)
-               ->whereDate('created_at', DB::raw('CURDATE()'));
+               ->whereDate('created_at', '=' ,  date('Y-m-d'));
 
             $ordersDelivered = Order::where('status', '=', 5)
-                ->whereDate('created_at', DB::raw('CURDATE()'));
+                ->whereDate('created_at', '=' ,  date('Y-m-d'));
 
             $ordersCancelled = Order::where('status', '=', -1)
-                ->whereDate('created_at', DB::raw('CURDATE()'));
+                ->whereDate('created_at', '=' ,  date('Y-m-d'));
+//                ->whereDate('created_at', DB::raw('CURDATE()'));
 
 //            $sales = DB::select("SELECT
 //SUM(orders.sub_total) AS total_sales

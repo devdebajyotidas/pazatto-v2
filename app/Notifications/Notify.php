@@ -165,7 +165,7 @@ class Notify
 
             if($order->status == 2 || $order->status == 5)
             {
-                self::sendInvoice($order);
+//                self::sendInvoice($order);
             }
 //        }
 

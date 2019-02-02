@@ -81,7 +81,7 @@
                                                     <tbody>
                                                     @if(isset($vendors))
                                                         @foreach($vendors as $key => $vendor)
-                                                            <tr>
+                                                            <tr class="{{ $vendor->trashed() ? 'bg-danger' : '' }}">
                                                                 <td>
                                                             <span class="label label-info">
                                                                 {{ $vendor->service->name }}
@@ -129,6 +129,19 @@
                                                                         Menu
                                                                     </a>
 
+                                                                    @if($vendor->trashed())
+                                                                        <form action="{{ url('vendors/' . $vendor->id . '/restore') }}" method="post">
+                                                                            {{ method_field('put') }}
+                                                                            {{ csrf_field() }}
+                                                                            <button type="submit"
+                                                                                    class="btn btn-sm btn-default btn-icon btn-pure btn-outline text-dark item-action"
+                                                                                    data-action="Restore">
+                                                                                <i class="ti-archive" aria-hidden="true"></i>
+                                                                                <span class="hidden-xs">Restore</span>
+                                                                            </button>
+                                                                        </form>
+                                                                    @else
+
                                                                     <form action="{{ url('vendors/'. $vendor->id) }}" method="post">
                                                                         {{ method_field('delete') }}
                                                                         {{ csrf_field() }}
@@ -141,6 +154,7 @@
                                                                             Archive
                                                                         </a>
                                                                     </form>
+                                                                    @endif
                                                                     {{--<form action="{{ $prefix . '/learners/'. $vendor->id}}"--}}
                                                                     {{--method="post">--}}
                                                                     {{--{{ method_field('delete') }}--}}

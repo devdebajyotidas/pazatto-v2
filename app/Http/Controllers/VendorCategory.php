@@ -35,30 +35,49 @@ class VendorCategory extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+//    public function store(Request $request)
+//    {
+//        $data = [];
+//        $item = ItemCategory::create($request->all());
+//
+//        if($request->ajax() || $request->wantsJson())
+//        {
+//
+//            $data['result'] =  response()->json($item);
+//            $data['status'] = 'false';
+//
+//            return $data;
+//        }
+//        else
+//        {
+////          return redirect()->intended('items');
+//            $data=[];
+//            $data['status'] = 'true';
+//             $data['result'] = $item;
+//            return $data;
+//        }
+//    }
+
     public function store(Request $request)
-    {   
+    {
         $data = [];
         $item = ItemCategory::create($request->all());
 
-        if($request->ajax() || $request->wantsJson())
-        {
-             
-            $data['result'] =  response()->json($item);
-            $data['status'] = 'false';
+        if ($request->ajax() || $request->wantsJson()) {
+
+            $data['result'] = $item;
+            $data['status'] = 'true';
 
             return $data;
-        }
-        else
-        {
+        } else {
 //          return redirect()->intended('items');
-            $data=[];
-            $data['status'] = 'true';
-             $data['result'] = $item;
+            $data['status'] = 'false';
+            $data['result'] = $item;
             return $data;
         }
     }
 
-    /**
+        /**
      * Display the specified resource.
      *
      * @param  int  $id

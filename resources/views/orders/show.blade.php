@@ -12,7 +12,7 @@
                         <div class="form-group row">
                             <label class="col-4 col-lg-2 col-form-label require" for="input-1">Customer</label>
                             <div class="col-8 col-lg-10">
-                                <select name="customer_id" class="form-control">
+                                <select name="customer_id" class="form-control selectpicker" data-live-search="true" >
                                     <option>Select Customer</option>
                                     @foreach($customers as $customer)
                                         <option value="{{ $customer->id }}" @if(isset($order) && $customer->id == $order->customer_id) {{ 'selected' }} @endif >
@@ -27,7 +27,7 @@
                             <label class="col-4 col-lg-2 col-form-label require" for="input-1">Agent</label>
                             <div class="col-8 col-lg-10">
                                 <select name="agent_id" class="form-control">
-                                    <option>Select Agent</option>
+                                    <option value="null">Select Agent</option>
                                     @foreach($agents as $agent)
                                         <option value="{{ $agent->id }}" @if(isset($order) && $agent->id == $order->agent_id) {{ 'selected' }} @endif >
                                             {{ $agent->first_name . ' ' . $agent->last_name }}
@@ -137,9 +137,12 @@
         </div>
     </div>
 
+
     <script>
         var menu = [];
         window.onload = function() {
+            $('.selectpicker').selectpicker();
+
             var itemIndex = $('.line-item').length;
             $("#vendor").change(function () {
                 var vendorId = $(this).val();

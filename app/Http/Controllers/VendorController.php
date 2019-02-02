@@ -8,6 +8,7 @@ use App\Models\Image;
 use App\Models\Service;
 use App\Models\User;
 use App\Models\Vendor;
+use function count;
 use function dd;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,6 +16,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Validator;
 use function implode;
+use function is_array;
+use function response;
 
 class VendorController extends Controller
 {
@@ -173,7 +176,7 @@ class VendorController extends Controller
             $data['role'] = session('role');
             $data['prefix']  = session('role');
 
-            $data['vendor'] = Vendor::with(['user','service'])->find($id);
+            $data['vendor'] = Vendor::withTrashed()->with(['user','service'])->find($id);
             $data['services'] = Service::withCount('vendors')->get();
 //        dd($data);
 
@@ -220,22 +223,41 @@ class VendorController extends Controller
                 '0.longitude' => 'required',
             ];
 
-            $validation = Validator::make($data['vendor'], $vendorRules);
-            if($validation->fails())
+
+            if(!empty($data['vendor']))
             {
-                return redirect()->back()->withInput($request->all())->withErrors( $validation->errors());
+                $validation = Validator::make($data['vendor'], $vendorRules);
+                if($validation->fails())
+                {
+                    if($request->wantsJson()) {
+                        return response()->json($validation->errors());
+                    }
+                    return redirect()->back()->withInput($request->all())->withErrors( $validation->errors());
+                }
             }
 
-            $validation = Validator::make($data['user'], $userRules);
-            if($validation->fails())
+            if(!empty($data['vendor']))
             {
-                return redirect()->back()->withInput($request->all())->withErrors($validation->errors());
+                $validation = Validator::make($data['user'], $userRules);
+                if($validation->fails())
+                {
+                    if($request->wantsJson()) {
+                        return response()->json($validation->errors());
+                    }
+                    return redirect()->back()->withInput($request->all())->withErrors($validation->errors());
+                }
             }
 
-            $validation = Validator::make($data['address'], $addressRules);
-            if($validation->fails())
+            if(!empty($data['address']))
             {
-                return redirect()->back()->withInput($request->all())->withErrors($validation->errors());
+                $validation = Validator::make($data['address'], $addressRules);
+                if($validation->fails())
+                {
+                    if($request->wantsJson()) {
+                        return response()->json($validation->errors());
+                    }
+                    return redirect()->back()->withInput($request->all())->withErrors($validation->errors());
+                }
             }
 
             if ($request->hasFile('vendor.featured_image'))
@@ -258,7 +280,7 @@ class VendorController extends Controller
                 }
             }
 
-            $vendor = Vendor::find($id);
+            $vendor = Vendor::withTrashed()->find($id);
             $vendor->fill($data['vendor']);
             $vendor->save();
 
@@ -279,22 +301,37 @@ class VendorController extends Controller
             }
 
 
-            $vendor->locations()->delete();
+            if(isset($data['address']) && is_array($data['address']) && count($data['address']) > 0) {
+                $vendor->locations()->delete();
+                foreach ($data['address'] as $address)
+                {
+                    if(empty($address['formatted_address']) || empty($address['latitude']) || empty($address['longitude']))
+                        continue;
 
-            foreach ($data['address'] as $address)
-            {
-                if(empty($address['formatted_address']) || empty($address['latitude']) || empty($address['longitude']))
-                    continue;
-
-                $vendor->locations()->save(Address::make($address));
+                    $vendor->locations()->save(Address::make($address));
+                }
             }
 
             DB::commit();
+            if($request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Account has been updated successfully',
+                    'data' => $vendor
+                ]);
+            }
             return redirect()->back();
         }
         catch (\Exception $exception)
         {
             DB::rollback();
+            if($request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $exception->getMessage(),
+                    'data' => null
+                ]);
+            }
             return redirect()->back()->withInput($request->all())->withErrors([$exception->getMessage()]);
         }
     }
@@ -312,12 +349,19 @@ class VendorController extends Controller
         }
     }
 
+    public function restore(Request $request, $vendorId)
+    {
+        Vendor::withTrashed()
+            ->where('id', $vendorId)
+            ->restore();
+        return redirect()->intended('vendors');
+    }
     public function takeOrders(Request $request, $id)
     {
         try
         {
             $data = $request->get('vendor');
-            $vendor = Vendor::find($id);
+            $vendor = Vendor::withTrashed()->find($id);
             $vendor->fill($data);
             $vendor->save();
 //            dd($vendor->is_taking_orders);

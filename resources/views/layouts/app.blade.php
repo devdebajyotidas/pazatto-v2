@@ -16,7 +16,7 @@
 <body id="{{ $page }}" class="content-wrapper no-sidebar">
     <div id="wrapper">
         <!-- Preloader -->
-        <div class="preloader">
+        <div class="preloader" style="display: none;">
             <div class="cssload-speeding-wheel"></div>
         </div>
         @include('includes.header')
@@ -58,6 +58,12 @@
 
 <!-- Scripts -->
 @include('includes.js')
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.5/css/bootstrap-select.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.5/js/bootstrap-select.min.js"></script>
+
 
     <script>
         $(document).ready(function () {

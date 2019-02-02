@@ -9,11 +9,14 @@
                 <p class="lead">Have a question or want further information?</p>
 
                 <p>Fill in the short form and we will get back to you as soon as possible.</p> <br>
+                <p>Or</p> <br>
+                <p>Call us on helpline no. <a href="tel:+919900681881">+919900681881</a></p> <br>
 
                 <!-- BEGIN DOWNLOAD PANEL -->
                 <div class="panel panel-default well">
                     <div class="panel-body">
-                        <form action="" class="form-horizontal track-event-form bv-form" data-goaltype="”General”" data-formname="”ContactUs”" method="get" id="contact-us-all" novalidate="novalidate">
+                        <form action="" class="form-horizontal track-event-form bv-form" data-goaltype="”General”" data-formname="”ContactUs”" method="post" id="contact-us-all" novalidate="novalidate">
+                            {{ csrf_field() }}
                             <input name="elqSiteId" type="hidden" value="928">
                             <input name="sFDCLastCampaignID" type="hidden" value="701400000012Lql">
                             <input name="elqFormName" type="hidden" value="EMEAAllContactUsSubmissions">
